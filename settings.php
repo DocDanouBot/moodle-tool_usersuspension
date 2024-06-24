@@ -29,8 +29,13 @@
  * */
 defined('MOODLE_INTERNAL') || die('moodle_internal not defined');
 
-if ($hassiteconfig) {
-    $temp = new admin_settingpage('suspensionsettings', new lang_string('suspensionsettings', 'tool_usersuspension'));
+if (($hassiteconfig) || (has_capability('tool/usersuspension:administration', context_system::instance()))) {
+    // We were extending the rights, so we can give the access to a specific role (=managers) without giving them full admin access.
+    if (!$ADMIN->locate('tools')) {
+        $ADMIN->add('modules', new admin_category('tools', new lang_string('tools', 'admin')));
+    }
+
+    $temp = new admin_settingpage('suspensionsettings', new lang_string('suspensionsettings', 'tool_usersuspension'), 'tool/usersuspension:administration');
     // Header.
     $image = '<a href="http://www.sebsoft.nl" target="_new"><img src="' .
             $OUTPUT->image_url('logo', 'tool_usersuspension') . '" /></a>&nbsp;&nbsp;&nbsp;';
