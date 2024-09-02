@@ -15,11 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Callback point for tool usersuspension
+ * Tasks performed by tool usersuspension
+ *
+ * File         tasks.php
+ * Encoding     UTF-8
  *
  * @package     tool_usersuspension
+ *
  * @copyright   Sebsoft.nl
  * @author      R.J. van Dongen <rogier@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- **/
+ *
+ * */
 
+defined('MOODLE_INTERNAL') || die();
+
+$callbacks = [
+    [
+        'hook' => \core\hook\output\before_standard_head_html_generation::class,
+        'callback' => [\tool_mobile\hook_callbacks::class, 'before_standard_head_html_generation'],
+    ],
+    [
+        'hook' => \core\hook\output\before_http_headers::class,
+        'callback' =>[\tool_usersuspension\hook_callbacks::class, 'before_http_headers'],
+    ],
+];
